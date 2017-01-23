@@ -128,8 +128,12 @@ func TestBuildExport(t *testing.T) {
 	defer provider.Close()
 
 	d := stubDocker(
+		cycleBuildDockerPing,
+		cycleBuildDockerInfo,
 		cycleBuildDockerLogin,
+		cycleBuildDockerPing,
 		cycleBuildDockerPull,
+		cycleBuildDockerPing,
 		cycleBuildDockerSave,
 	)
 	defer d.Close()
@@ -185,9 +189,14 @@ func TestBuildImport(t *testing.T) {
 	defer provider.Close()
 
 	d := stubDocker(
+		cycleBuildDockerPing,
+		cycleBuildDockerInfo,
 		cycleBuildDockerLogin,
+		cycleBuildDockerPing,
 		cycleBuildDockerLoad,
+		cycleBuildDockerPing,
 		cycleBuildDockerTag,
+		cycleBuildDockerPing,
 		cycleBuildDockerPush,
 	)
 	defer d.Close()
@@ -449,6 +458,19 @@ var cycleBuildDescribeRepositories = awsutil.Cycle{
 				}
 			]
 		}`,
+	},
+}
+
+var cyclePing = awsutil.Cycle{
+	awsutil.Request{
+		Method:     "GET",
+		RequestURI: "/_ping",
+		Operation:  "",
+		Body:       "",
+	},
+	awsutil.Response{
+		StatusCode: 200,
+		Body:       `OK`,
 	},
 }
 
@@ -739,6 +761,16 @@ var cycleBuildGetAuthorizationTokenPrivate2 = awsutil.Cycle{
 	},
 }
 
+var cycleBuildInfo = awsutil.Cycle{
+	Request: awsutil.Request{
+		RequestURI: "/1.24/info",
+		Method:     "GET",
+	},
+	Response: awsutil.Response{
+		StatusCode: 200,
+		Body:       `{}`,
+	},
+}
 var cycleBuildGetItem = awsutil.Cycle{
 	Request: awsutil.Request{
 		RequestURI: "/",
@@ -1158,6 +1190,27 @@ var cycleBuildDockerLoad = awsutil.Cycle{
 	},
 	Response: awsutil.Response{
 		StatusCode: 200,
+	},
+}
+
+var cycleBuildDockerInfo = awsutil.Cycle{
+	Request: awsutil.Request{
+		Method:     "GET",
+		RequestURI: "/v1.24/info",
+	},
+	Response: awsutil.Response{
+		StatusCode: 200,
+		Body:       `OK`, //FIXME
+	},
+}
+var cycleBuildDockerPing = awsutil.Cycle{
+	Request: awsutil.Request{
+		Method:     "GET",
+		RequestURI: "/_ping",
+	},
+	Response: awsutil.Response{
+		StatusCode: 200,
+		Body:       `OK`,
 	},
 }
 
