@@ -1705,7 +1705,7 @@
         "LoadBalancers": [
           {
             "ContainerName": "web",
-            "ContainerPort": "4443",
+            "ContainerPort": "4444",
             "LoadBalancerName": { "Ref": "Balancer" }
           }
         ],
@@ -2000,7 +2000,7 @@
             "Name": "web",
             "PortMappings": [
               "3000:3000",
-              "3001:4443"
+              "3001:4444"
             ],
             "Volumes": [
               "/var/run/docker.sock:/var/run/docker.sock"
