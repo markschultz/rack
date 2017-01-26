@@ -1701,7 +1701,7 @@
           "MinimumHealthyPercent": "33",
           "MaximumPercent": "200"
         },
-        "DesiredCount": "3",
+        "DesiredCount": "2",
         "LoadBalancers": [
           {
             "ContainerName": "web",
